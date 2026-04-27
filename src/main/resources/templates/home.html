@@ -1,38 +1,328 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Data Mahasiswa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: #f4f3f0;
+            font-family: 'Lato', sans-serif;
+            color: #1a1a1a;
+        }
+
+        /* ── Navbar ── */
+        .navbar {
+            background: #ffffff;
+            border-bottom: 0.5px solid #e0dfd8;
+            padding: 0 2rem;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar-brand {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar-brand .title {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 500;
+            color: #1a1a1a;
+            line-height: 1.2;
+        }
+
+        .navbar-brand .subtitle {
+            font-size: 11px;
+            color: #888780;
+            letter-spacing: 0.05em;
+        }
+
+        .btn-logout {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: transparent;
+            border: 0.5px solid #c8c7c0;
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: 'Lato', sans-serif;
+            color: #5F5E5A;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        .btn-logout:hover {
+            background: #f4f3f0;
+            border-color: #a32d2d;
+            color: #a32d2d;
+        }
+
+        /* ── Main Content ── */
+        .main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* ── Welcome Banner ── */
+        .welcome-banner {
+            background: #ffffff;
+            border: 0.5px solid #e0dfd8;
+            border-radius: 16px;
+            padding: 1.5rem 1.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .welcome-text h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 500;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+
+        .welcome-text p {
+            font-size: 13px;
+            color: #888780;
+        }
+
+        .btn-input {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: #534AB7;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            font-family: 'Lato', sans-serif;
+            letter-spacing: 0.03em;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.15s, transform 0.1s;
+            white-space: nowrap;
+        }
+
+        .btn-input:hover {
+            background: #3C3489;
+        }
+
+        .btn-input:active {
+            transform: scale(0.98);
+        }
+
+        /* ── Section Header ── */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 500;
+            color: #1a1a1a;
+        }
+
+        .badge-count {
+            font-size: 11px;
+            font-weight: 700;
+            font-family: 'Lato', sans-serif;
+            background: #EEEDFE;
+            color: #3C3489;
+            padding: 3px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.04em;
+        }
+
+        /* ── Table Card ── */
+        .table-card {
+            background: #ffffff;
+            border: 0.5px solid #e0dfd8;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        thead {
+            background: #f9f8f5;
+            border-bottom: 0.5px solid #e0dfd8;
+        }
+
+        thead th {
+            padding: 12px 16px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            color: #888780;
+            text-align: left;
+        }
+
+        thead th:first-child {
+            width: 60px;
+            text-align: center;
+        }
+
+        tbody tr {
+            border-bottom: 0.5px solid #f0efe8;
+            transition: background 0.1s;
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: #fafaf8;
+        }
+
+        tbody td {
+            padding: 14px 16px;
+            font-size: 14px;
+            color: #1a1a1a;
+        }
+
+        tbody td:first-child {
+            text-align: center;
+            font-size: 12px;
+            color: #888780;
+            font-weight: 700;
+        }
+
+        .empty-row td {
+            text-align: center;
+            color: #b4b2a9;
+            font-size: 13px;
+            padding: 2.5rem;
+        }
+
+        .gender-badge {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+
+        .gender-laki {
+            background: #E6F1FB;
+            color: #0C447C;
+        }
+
+        .gender-perempuan {
+            background: #FBEAF0;
+            color: #72243E;
+        }
+
+        .gender-other {
+            background: #F1EFE8;
+            color: #444441;
+        }
+    </style>
 </head>
 <body>
-<h2>MY Website 20230140068 (wahyu)</h2>
-<p>Selamat datang di aplikasi!</p>
 
-<a href="/form"><button>Input Data Mahasiswa</button></a>
+<!-- ── Navbar ── -->
+<nav class="navbar">
+    <div class="navbar-brand">
+        <span class="title">MY Website</span>
+        <span class="subtitle">20230140068 &mdash; Wahyu</span>
+    </div>
+    <a href="/logout" class="btn-logout">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Logout
+    </a>
+</nav>
 
-<h3>Data Mahasiswa</h3>
-<a href="/logout"><button>Logout</button></a>
-<br><br>
+<!-- ── Main Content ── -->
+<main class="main">
 
-<table border="1" cellpadding="10" cellspacing="0">
-    <thead>
-    <tr>
-        <th>No</th>
-        <th>Nama</th>
-        <th>NIM</th>
-        <th>Jenis Kelamin</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:if="${#lists.isEmpty(userList)}">
-        <td colspan="4" style="text-align: center;">Belum ada data</td>
-    </tr>
-    <tr th:each="user, iterStat : ${userList}">
-        <td th:text="${iterStat.count}">1</td>
-        <td th:text="${user.nama}">Nama</td>
-        <td th:text="${user.nim}">NIM</td>
-        <td th:text="${user.jenisKelamin}">Laki-laki</td>
-    </tr>
-    </tbody>
-</table>
+    <!-- Welcome Banner -->
+    <div class="welcome-banner">
+        <div class="welcome-text">
+            <h1>Selamat datang di aplikasi!</h1>
+            <p>Kelola data mahasiswa di bawah ini.</p>
+        </div>
+        <a href="/form" class="btn-input">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            Input Data Mahasiswa
+        </a>
+    </div>
+
+    <!-- Table Section -->
+    <div class="section-header">
+        <span class="section-title">Data Mahasiswa</span>
+        <span class="badge-count"
+              th:text="${#lists.isEmpty(userList)} ? '0 data' : ${#lists.size(userList)} + ' data'">
+            0 data
+        </span>
+    </div>
+
+    <div class="table-card">
+        <table>
+            <thead>
+            <tr>
+                <th>No</th>
+                <th>Nama</th>
+                <th>NIM</th>
+                <th>Jenis Kelamin</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="empty-row" th:if="${#lists.isEmpty(userList)}">
+                <td colspan="4">Belum ada data mahasiswa</td>
+            </tr>
+            <tr th:each="user, iterStat : ${userList}">
+                <td th:text="${iterStat.count}">1</td>
+                <td th:text="${user.nama}">Nama</td>
+                <td th:text="${user.nim}">NIM</td>
+                <td>
+                        <span th:classappend="${user.jenisKelamin == 'Laki-laki'} ? 'gender-laki' : (${user.jenisKelamin == 'Perempuan'} ? 'gender-perempuan' : 'gender-other')"
+                              class="gender-badge"
+                              th:text="${user.jenisKelamin}">
+                            Laki-laki
+                        </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</main>
+
 </body>
 </html>

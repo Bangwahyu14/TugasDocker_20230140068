@@ -1,24 +1,174 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="id">
 <head>
-    <title>Login Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Aku Website 20230140068</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+
+        .container {
+            display: flex;
+            width: 900px;
+            margin: auto;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        /* LEFT (IMAGE) */
+        .left {
+    width: 50%;
+    background: url('/image/gambar.jpeg') no-repeat center;
+    background-size: cover;
+    position: relative;
+}
+
+        .left::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+        }
+
+        .left-text {
+            position: absolute;
+            color: white;
+            z-index: 2;
+            bottom: 30px;
+            left: 20px;
+        }
+
+        .left-text h2 {
+            font-weight: 600;
+        }
+
+        /* RIGHT (FORM) */
+        .right {
+            width: 50%;
+            padding: 40px;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        .nim {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 14px;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 16px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        input:focus {
+            border-color: #4facfe;
+            outline: none;
+            box-shadow: 0 0 5px rgba(79,172,254,0.5);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .error {
+            background: #ffe0e0;
+            border: 1px solid #f5c6c6;
+            color: #c0392b;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 14px;
+        }
+
+        @media(max-width: 768px){
+            .container {
+                flex-direction: column;
+                width: 90%;
+            }
+
+            .left {
+                height: 200px;
+                width: 100%;
+            }
+
+            .right {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-<h2>Login Page</h2>
-<p style="color: red;" th:if="${error}" th:text="${error}"></p>
 
-<form action="/login" method="post">
-    <div>
-        <label>Username</label><br>
-        <input type="text" name="username" required>
+<div class="container">
+
+    <!-- LEFT IMAGE -->
+    <div class="left">
+        <div class="left-text">
+            <h2>Welcome Back 👋</h2>
+            <p>Langit itu tinggi, Lautan itu dalam. Jangan pernah mencintai orang setinggi langit, jika tidak mau terluka sedalam lautan </p>
+        </div>
     </div>
-    <br>
-    <div>
-        <label>Password</label><br>
-        <input type="password" name="password" required>
+
+    <!-- RIGHT FORM -->
+    <div class="right">
+        <h2>Login</h2>
+
+        <div th:if="${error}" class="error" th:text="${error}"></div>
+
+        <form th:action="@{/login}" method="post">
+            <label>Username</label>
+            <input type="text" name="username" required autofocus/>
+
+            <label>Password</label>
+            <input type="password" name="password" required/>
+
+            <button type="submit">Login</button>
+        </form>
     </div>
-    <br>
-    <button type="submit">Login</button>
-</form>
+
+</div>
+
 </body>
 </html>
